@@ -1,6 +1,7 @@
-#include "gauss.h"
 #include <cmath>
 #include <stdexcept>
+
+#include "gauss.h"
 
 Vector gauss_with_pivot(Matrix A, Vector b) {
     size_t len = A.size();
