@@ -1,7 +1,7 @@
+#include "LU.h"
+
 #include <stdexcept>
 #include <cmath>
-
-#include "LU.h"
 
 // LU разложение
 void lu_decomposition(const Matrix &A, Matrix &L, Matrix &U) {
@@ -16,7 +16,7 @@ void lu_decomposition(const Matrix &A, Matrix &L, Matrix &U) {
 
     for (size_t i = 0; i < dim; i++) {
 
-        // solving U matrix
+        // Вычисляем строку матрицы U
         for (size_t j = i; j < dim; j++) {
             double sum = 0;
 
@@ -26,11 +26,13 @@ void lu_decomposition(const Matrix &A, Matrix &L, Matrix &U) {
 
             U[i][j] = A[i][j] - sum;
         }
+
+        // Проверка диагонального элемента
         if (std::abs(U[i][i]) < 1e-18) {
             throw std::runtime_error("Zero on diagonal");
         }
 
-        // solving L matrix
+        // Вычисляем столбец матрицы L
         for (size_t j = i + 1; j < dim; j++) {
             double sum = 0;
 
@@ -55,10 +57,6 @@ Vector forward_sub(const Matrix &L, const Vector &b) {
             sum += L[i][k] * y[k];
         }
 
-        if (std::abs(L[i][i]) < 1e-18) {
-            throw std::runtime_error("Zero on diagonal");
-        }
-
         y[i] = (b[i] - sum)/L[i][i];
     }
 
@@ -78,7 +76,7 @@ Vector backward_sub(const Matrix &U, const Vector &y) {
         }
 
         if (std::abs(U[i][i]) < 1e-18) {
-            throw std::runtime_error("Zero on diagonal");
+            throw std::runtime_error("Zero on diagonal in U matrix");
         }
 
         x[i] = (y[i] - sum)/U[i][i];
@@ -87,7 +85,7 @@ Vector backward_sub(const Matrix &U, const Vector &y) {
     return x;
 }
 
-// Решение LU разложения LU = b
+// Решение LU разложения LUx = b
 Vector solve_lu(const Matrix& L, const Matrix& U, const Vector& b) {
     Vector y = forward_sub(L, b);
     return backward_sub(U, y);

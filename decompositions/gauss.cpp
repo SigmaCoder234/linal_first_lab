@@ -1,7 +1,6 @@
+#include "gauss.h"
 #include <cmath>
 #include <stdexcept>
-
-#include "gauss.h"
 
 Vector gauss_with_pivot(Matrix A, Vector b) {
     size_t len = A.size();
@@ -48,7 +47,7 @@ Vector gauss_with_pivot(Matrix A, Vector b) {
         }
 
         if (std::abs(A[i][i]) < 1e-18) {
-            throw std::runtime_error("Zero on diagonal");
+            throw std::runtime_error("Zero on diagonal during back substitution");
         }
 
         x[i] = (b[i] - sum) / A[i][i];
@@ -63,7 +62,7 @@ Vector gauss_without_pivot(Matrix A, Vector b) {
     // прямой ход
     for (size_t i = 0; i < len; i++) {
         if (std::abs(A[i][i]) < 1e-18) {
-            throw std::runtime_error("Zero pivot encountered");
+            throw std::runtime_error("Zero pivot encountered: Matrix is singular");
         }
 
         for (size_t k = i + 1; k < len; k++) {
@@ -89,7 +88,7 @@ Vector gauss_without_pivot(Matrix A, Vector b) {
         }
 
         if (std::abs(A[i][i]) < 1e-18) {
-            throw std::runtime_error("Zero on diagonal");
+            throw std::runtime_error("Zero on diagonal during back substitution");
         }
 
         x[i] = (b[i] - sum) / A[i][i];
