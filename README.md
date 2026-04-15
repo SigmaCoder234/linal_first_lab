@@ -1,1 +1,0 @@
-# linal_first_lab
