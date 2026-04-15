@@ -1,7 +1,7 @@
-#include "LU.h"
-
 #include <stdexcept>
 #include <cmath>
+
+#include "LU.h"
 
 // LU разложение
 void lu_decomposition(const Matrix &A, Matrix &L, Matrix &U) {
