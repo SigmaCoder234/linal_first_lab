@@ -8,6 +8,8 @@ include_directories(.)
 add_executable(first_lab
         matrix/matrix.cpp
         matrix/matrix.h
+        hand_work/hand_work.cpp
+        hand_work/hand_work.h
         decompositions/gauss.cpp
         decompositions/gauss.h
         decompositions/LU.cpp
