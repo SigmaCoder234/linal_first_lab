@@ -121,35 +121,55 @@ int main() {
 
             // LU разложение
             case 7:
-                if (!A.size()) {
-                    std::cout << "Initialize matrix first\n";
-                    break;
-                }
-                if (!b.size()) {
-                    std::cout << "Initialize vector first\n";
-                    break;
+                int chc;
+                std::cout << "Solve LU or Decompose LU? (1 for solve, 2 for decompose): ";
+                std::cin >> chc;
+                if (chc == 1) {
+                    if (!A.size()) {
+                        std::cout << "Initialize matrix first\n";
+                        break;
+                    }
+
+                    if (!b.size()) {
+                        std::cout << "Initialize vector first\n";
+                        break;
+                    }
+
+                    if (A.size() != b.size()) {
+                        std::cout << "different dims\n";
+                        break;
+                    }
+
+                    else {
+                        lu_decomposition(A, L, U);
+
+                        std::cout << "Print LU matrices? (1 for Yes, 0 for No): ";
+                        bool print_lu = safe_bool_input();
+
+                        if (print_lu) {
+                            std::cout << "L: \n";
+                            matrix_print(L);
+                            std::cout << "U: \n";
+                            matrix_print(U);
+                        }
+                        Vector x = solve_lu(L, U, b);
+                        std::cout << "LU decomposition and solve completed.\n";
+                        vector_print(x);
+                    }
                 }
 
-                if (A.size() != b.size()) {
-                    std::cout << "different dims\n";
-                    break;
-                }
+                if (chc == 2) {
+                    if (!A.size()) {
+                        std::cout << "Initialize matrix first\n";
+                        break;
+                    }
 
-                else {
                     lu_decomposition(A, L, U);
 
-                    std::cout << "Print LU matrices? (1 for Yes, 0 for No): ";
-                    bool print_lu = safe_bool_input();
-
-                    if (print_lu) {
-                        std::cout << "L: \n";
-                        matrix_print(L);
-                        std::cout << "U: \n";
-                        matrix_print(U);
-                    }
-                    Vector x = solve_lu(L, U, b);
-                    std::cout << "LU decomposition and solve completed.\n";
-                    vector_print(x);
+                    std::cout << "L: \n";
+                    matrix_print(L);
+                    std::cout << "U: \n";
+                    matrix_print(U);
                 }
                 break;
 
