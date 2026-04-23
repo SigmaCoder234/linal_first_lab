@@ -1,16 +1,15 @@
 #include <random>
-#include <vector>
 
 #include "matrix.h"
 
 static std::mt19937 generator(1337);
 
 Matrix create_matrix(int dim) {
-    Matrix A(dim, std::vector<double>(dim));
+    Matrix A(dim);
     std::uniform_real_distribution<double> dis(-1.0, 1.0);
-    for (auto& row : A){
-        for (auto& elem : row) {
-            elem = dis(generator);
+    for (int i = 0; i < dim; i++){
+        for (int j = 0; j < dim; j++) {
+            A[i][j] = dis(generator);
         }
     }
 
@@ -18,7 +17,7 @@ Matrix create_matrix(int dim) {
 }
 
 Matrix create_gilbert_matrix(int dim) {
-    Matrix gilbert(dim, std::vector<double>(dim));
+    Matrix gilbert(dim);
 
     for (int i = 0; i < dim; i++)
         for (int j = 0; j < dim; j++)
@@ -31,19 +30,19 @@ Vector create_vector(int len) {
     Vector b(len);
     std::uniform_real_distribution<double> dis(-1.0, 1.0);
 
-    for (auto& elem : b) {
-        elem = dis(generator);
+    for (int i = 0; i < len; i++) {
+        b[i] = dis(generator);
     }
 
     return b;
 }
 
 Vector matrix_by_vector(const Matrix& A, const Vector& b) {
-    size_t len = A.size();
-    Vector result(len);
+    int dim = A.size();
+    Vector result(dim);
 
-    for (size_t i = 0; i < len; i++) {
-        for (size_t j = 0; j < len; j++) {
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < dim; j++) {
             result[i] = result[i] + (A[i][j] * b[j]);
         }
     }

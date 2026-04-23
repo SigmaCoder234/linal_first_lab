@@ -63,11 +63,11 @@ bool safe_bool_input() {
 }
 
 Matrix fill_matrix(int dim) {
-    Matrix A(dim, std::vector<double>(dim));
+    Matrix A(dim);
 
     for (int i = 0; i < dim; i++) {
         for (int j = 0; j < dim; j++) {
-            std::cout << "A[" << i << "][" << j << "] = ";
+            std::cout << "A[" << i+1 << "][" << j+1 << "] = ";
             A[i][j] = safe_input();
         }
     }
@@ -79,7 +79,7 @@ Vector fill_vector(int len) {
     Vector b(len);
 
     for (int i = 0; i < len; i++) {
-        std::cout << "b[" << i << "] = ";
+        std::cout << "b[" << i+1 << "] = ";
         b[i] = safe_input();
     }
 

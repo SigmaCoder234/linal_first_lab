@@ -1,5 +1,5 @@
 #include <cmath>
-
+#include <stddef.h>
 #include "math_ops.h"
 #include "../matrix/matrix.h"
 

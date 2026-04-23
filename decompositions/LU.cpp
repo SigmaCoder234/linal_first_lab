@@ -1,26 +1,26 @@
 #include "LU.h"
-
+#include "../matrix/matrix.h"
 #include <stdexcept>
 #include <cmath>
 
 // LU разложение
 void lu_decomposition(const Matrix &A, Matrix &L, Matrix &U) {
-    size_t dim = A.size();
+    int dim = A.size();
 
-    L = Matrix(dim, Vector(dim, 0.0));
-    U = Matrix(dim, Vector(dim, 0.0));
+    L = Matrix(dim);
+    U = Matrix(dim);
 
-    for (size_t i = 0; i < dim; i++) {
+    for (int i = 0; i < dim; i++) {
         L[i][i] = 1.0;
     }
 
-    for (size_t i = 0; i < dim; i++) {
+    for (int i = 0; i < dim; i++) {
 
         // Вычисляем строку матрицы U
-        for (size_t j = i; j < dim; j++) {
+        for (int j = i; j < dim; j++) {
             double sum = 0;
 
-            for (size_t k = 0; k < i; k++) {
+            for (int k = 0; k < i; k++) {
                 sum += L[i][k] * U[k][j];
             }
 
@@ -33,10 +33,10 @@ void lu_decomposition(const Matrix &A, Matrix &L, Matrix &U) {
         }
 
         // Вычисляем столбец матрицы L
-        for (size_t j = i + 1; j < dim; j++) {
+        for (int j = i + 1; j < dim; j++) {
             double sum = 0;
 
-            for (size_t k = 0; k < i; k++) {
+            for (int k = 0; k < i; k++) {
                 sum += L[j][k] * U[k][i];
             }
 
@@ -47,13 +47,13 @@ void lu_decomposition(const Matrix &A, Matrix &L, Matrix &U) {
 
 // прямое разложение Ly = b
 Vector forward_sub(const Matrix &L, const Vector &b) {
-    size_t dim = L.size();
+    int dim = L.size();
     Vector y(dim);
 
-    for (size_t i = 0; i < dim; i++) {
+    for (int i = 0; i < dim; i++) {
         double sum = 0;
 
-        for (size_t k = 0; k < i; k++) {
+        for (int k = 0; k < i; k++) {
             sum += L[i][k] * y[k];
         }
 
@@ -65,13 +65,13 @@ Vector forward_sub(const Matrix &L, const Vector &b) {
 
 // обратное разложение Ux = y
 Vector backward_sub(const Matrix &U, const Vector &y) {
-    size_t dim = U.size();
+    int dim = U.size();
     Vector x(dim);
 
-    for (int i = static_cast<int>(dim) - 1; i >= 0; i--) {
+    for (int i = dim - 1; i >= 0; i--) {
         double sum = 0;
 
-        for (size_t k = i + 1; k < dim; k++) {
+        for (int k = i + 1; k < dim; k++) {
             sum += U[i][k] * x[k];
         }
 

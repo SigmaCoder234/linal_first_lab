@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <chrono>
 
 #include "matrix/matrix.h"
@@ -11,7 +10,8 @@
 void first_test() {
     std::cout << "\n============= FIRST TEST =============\n";
 
-    std::vector<int> sizes = {100, 200, 500, 1000};
+    int size[] = {100, 200, 500, 1000};
+    DynamicArray<int> sizes(size, 4);
 
     for (int n : sizes) {
         Matrix A = create_matrix(n);
@@ -30,7 +30,8 @@ void first_test() {
         double time_without_pivot = std::chrono::duration<double>(end - start).count();
 
         // разложение матрицы LU
-        Matrix L, U;
+        Matrix L(n);
+        Matrix U(n);
         start = std::chrono::high_resolution_clock::now();
         lu_decomposition(A, L, U);
         end = std::chrono::high_resolution_clock::now();
@@ -58,15 +59,15 @@ void second_test() {
     std::cout << "\n============= SECOND TEST =============\n";
 
     int n = 500;
-    std::vector<int> sizes = {1, 10, 100};
-    std::vector<Vector> b_vectors;
+    int size[] = {1, 10, 100};
+    DynamicArray<int> sizes(size, 3);
 
     Matrix A = create_matrix(n);
     for (int k : sizes) {
-        std::vector<Vector> b_vectors;
+        DynamicArray<Vector> b_vectors(k);
 
         for (int i = 0; i < k; i++) {
-            b_vectors.push_back(create_vector(n));
+            b_vectors[i] = create_vector(n);
         }
 
         // gauss with pivot test
@@ -82,7 +83,7 @@ void second_test() {
         // LU test
         start = std::chrono::high_resolution_clock::now();
 
-        Matrix L, U;
+        Matrix L(n), U(n);
 
         lu_decomposition(A, L, U);
 
@@ -103,16 +104,22 @@ void second_test() {
 void third_test() {
     std::cout << "\n============= THIRD TEST =============\n";
 
-    std::vector<int> sizes = {5, 10, 15};
+    int size[] = {5, 10, 15};
+    DynamicArray<int> sizes(size, 3);
 
     for (int n : sizes) {
         Matrix G = create_gilbert_matrix(n);
-        Vector x_exact = Vector(n, 1.0);
+        Vector x_exact(n);
+        for (int i = 0; i < n; i++) {
+            x_exact[i] = 1.0;
+        }
 
         Vector b = matrix_by_vector(G, x_exact);
 
         // решение системы каждым разложением
-        Vector x_gauss, x_with_pivot, x_lu;
+        Vector x_gauss(n);
+        Vector x_with_pivot(n);
+        Vector x_lu(n);
 
         // гаусово разложение без опорного элемента
         bool gauss = true;
@@ -136,7 +143,7 @@ void third_test() {
 
         // LU разложение
         bool lu = true;
-        Matrix L, U;
+        Matrix L(n), U(n);
         try {
             lu_decomposition(G, L, U);
             x_lu = solve_lu(L, U, b);
