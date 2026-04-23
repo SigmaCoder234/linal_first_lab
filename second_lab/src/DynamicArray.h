@@ -1,6 +1,5 @@
 #pragma once
 #include <stdexcept>
-#include "IEnumerable.h"
 #include "IEnumerator.h"
 
 template <class T>
@@ -64,7 +63,7 @@ public:
     class ArrayEnumerator : public IEnumerator<T> {
     private:
         const DynamicArray<T>* array; // Указатель на массив, который мы перебираем
-        int current_index;            // Текущая позиция "закладки"
+        int current_index;            // Текущая позиция
 
     public:
         // Конструктор итератора
